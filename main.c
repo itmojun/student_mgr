@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "stu_mgr.h"
+#include "user_mgr.h"
 
 
 void input_stu(void);
@@ -18,6 +19,8 @@ int main()
 
 	printf("欢迎使用学生信息管理系统！\n");
 
+	user_login();
+
 	time_t t;
 	time(&t);
 	struct tm* now_time = localtime(&t);
@@ -29,6 +32,8 @@ int main()
 	printf("删除学生信息请输入2\n");
 	printf("修改学生信息请输入3\n");
 	printf("查询学生信息请输入4\n");
+	printf("添加普通用户请输入5\n");
+	printf("删除普通用户请输入6\n");
 	printf("退出系统请输入0\n");
 
 	while(1)
@@ -41,6 +46,12 @@ int main()
 			while(getchar() != '\n');
 
 			op = -1;
+		}
+
+		if(user.user_role == 2 && (op == 2 || op == 3 || op == 5 || op == 6))
+		{
+			printf("\n很抱歉，您没有权限执行此功能！\n");
+			continue;
 		}
 
 		switch(op)
@@ -57,6 +68,8 @@ int main()
 			case 1:
 			{
 				// 录入学生信息
+				
+
 				input_stu();
 				save_data();
 			}
@@ -84,6 +97,20 @@ int main()
 				printf("\n所有学生信息如下：\n");
 				show(stu_list);
 				printf("\n共有 %d 名学生。\n", size(stu_list));
+			}
+			break;
+
+			case 5:
+			{
+				// 添加普通用户
+				user_add();
+			}
+			break;
+
+			case 6:
+			{
+				// 删除普通用户
+				user_del();
 			}
 			break;
 
